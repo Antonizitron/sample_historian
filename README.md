@@ -1,6 +1,6 @@
 # Simple Process Historian Viewer 📊
 
-A lightweight, browser-based application for visualizing industrial process data (alarms/events and trends) from CSV files. This application was initially generated with the assistance of Google Gemini 2.5 and provides a basic interface inspired by industrial control system historians, based on the data from the Tennessee Eastman Process (TEP) benchmark.
+A lightweight, browser-based application for visualizing industrial process data (alarms/events and trends) from CSV files. This application was initially generated with the assistance of Google Gemini 2.5 and provides a basic interface inspired by industrial control system historians, based on the data from the Tennessee Eastman Process (TEP) benchmark (https://github.com/Antonizitron/tep_alarms_text).
 
 It consists of two main views:
 
