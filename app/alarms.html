@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Historian - Alarms</title>
+    <!-- Google Font: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Link to our stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- PapaParse library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Marked library for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Process Historian</h1>
+            <p>Industrial Control System Data</p>
+            <nav class="app-navigation">
+                <ul>
+                    <li><a href="alarms.html" class="active">Alarms and Events</a></li>
+                    <li><a href="trends.html">Trends</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="app-main">
+            <!-- Controls Section -->
+            <div class="controls-section">
+                <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+                <!-- *** Renamed Button *** -->
+                <button id="sourceButton" class="button button-primary">Source Alarms</button>
+            </div>
+
+            <!-- Filter Section -->
+            <fieldset class="filter-section card">
+                 <legend>Filter Alarms</legend>
+                <div class="filter-grid">
+                    <div>
+                        <label for="startDate">Start Date:</label>
+                        <input type="datetime-local" id="startDate" name="startDate" class="input-field">
+                    </div>
+                    <div>
+                        <label for="endDate">End Date:</label>
+                        <input type="datetime-local" id="endDate" name="endDate" class="input-field">
+                    </div>
+                    <div>
+                        <label for="tagFilter">Tag:</label>
+                        <input type="text" id="tagFilter" name="tagFilter" placeholder="e.g., FIR123" class="input-field">
+                    </div>
+                    <div>
+                        <label for="typeFilter">Condition (Type):</label>
+                        <input type="text" id="typeFilter" name="typeFilter" placeholder="e.g., L, H NR" class="input-field">
+                    </div>
+                    <div class="filter-description">
+                        <label for="descFilter">Description:</label>
+                        <input type="text" id="descFilter" name="descFilter" placeholder="e.g., HIGH ALM" class="input-field">
+                    </div>
+                    <div class="filter-button-container">
+                         <button id="searchButton" class="button button-primary">Search</button>
+                         <button id="resetButton" class="button button-secondary" type="button">Reset</button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Table Container -->
+            <div id="tableContainer" class="table-container card">
+                <p class="initial-message">Click "Source" to load alarm data.</p>
+                <!-- Alarm table will be dynamically inserted here -->
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>© 2024 Process Historian App</p>
+        </footer>
+    </div>
+
+    <script src="alarms.js"></script>
+</body>
+</html>

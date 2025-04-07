@@ -1,0 +1,477 @@
+/* --- START OF FILE style.css --- */
+
+/* --- Google Cloud Platform Inspired Theme (with Sorting & Trends Layout) --- */
+
+/* Import Roboto Font (Linked in HTML) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* Variables (GCP-specific shades) */
+:root {
+    /* Core Colors */
+    --gcp-blue: #1a73e8;
+    --gcp-blue-dark: #1765cc;
+    --gcp-text-primary: #202124;       /* Black/Dark Grey for main text */
+    --gcp-text-secondary: #5f6368;    /* Medium Grey for secondary text/icons */
+    --gcp-text-link: var(--gcp-blue);
+    --gcp-background-main: #f8f9fa;    /* Very light grey page background */
+    --gcp-background-card: #ffffff;   /* White card background */
+    --gcp-red: #d93025; /* GCP Red for errors/critical */
+
+    /* Borders & Dividers */
+    --gcp-border-color: #dadce0;       /* Standard light grey border */
+    --gcp-border-color-heavy: #bdc1c6; /* Slightly heavier border if needed */
+
+    /* Input & Focus */
+    --gcp-input-border: var(--gcp-border-color-heavy);
+    --gcp-input-focus-border: var(--gcp-blue);
+    --gcp-focus-ring: 0 0 0 2px rgba(26, 115, 232, 0.2);
+
+    /* Other UI Elements */
+    --gcp-hover-background: #f1f3f4;   /* Subtle light grey hover */
+    --gcp-table-header-bg: var(--gcp-background-main);
+
+    /* Base Settings */
+    --font-family-sans-serif: "Roboto", Arial, sans-serif;
+    --border-radius: 4px;
+    --card-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.08), 0 1px 3px 1px rgba(60, 64, 67, 0.04); /* Very subtle shadow (optional, GCP uses borders more) */
+}
+
+/* Basic Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body Styling */
+body {
+    font-family: var(--font-family-sans-serif);
+    font-size: 14px; /* GCP base font */
+    line-height: 1.5;
+    background-color: var(--gcp-background-main);
+    color: var(--gcp-text-primary);
+    padding: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* App Container */
+.app-container {
+    max-width: 1600px;
+    margin: 16px auto;
+}
+
+/* Header */
+.app-header {
+    text-align: left;
+    margin-bottom: 0; /* Adjusted margin */
+    padding: 16px 0 0 0; /* Adjusted padding */
+}
+.app-header h1 {
+    color: var(--gcp-text-primary);
+    font-size: 1.5rem; /* 24px */
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+.app-header p {
+    color: var(--gcp-text-secondary);
+    font-size: 0.9rem; /* 14.4px */
+    margin-bottom: 16px; /* Space below subtitle, before nav */
+}
+
+/* --- START: Navigation Menu Styles --- */
+.app-navigation {
+    border-bottom: 1px solid var(--gcp-border-color); /* Separator line */
+    margin-bottom: 24px; /* Space below navigation before main content */
+}
+.app-navigation ul {
+    list-style: none; padding: 0; margin: 0; display: flex; gap: 8px;
+}
+.app-navigation li { display: inline-block; }
+.app-navigation a {
+    display: inline-block; padding: 10px 16px; font-size: 0.875rem; font-weight: 500;
+    color: var(--gcp-text-secondary); text-decoration: none; border-bottom: 3px solid transparent;
+    margin-bottom: -1px; transition: color 0.15s ease, border-color 0.15s ease; white-space: nowrap;
+}
+.app-navigation a:hover { color: var(--gcp-text-primary); }
+.app-navigation a.active { color: var(--gcp-blue); border-bottom-color: var(--gcp-blue); font-weight: 500; }
+/* --- END: Navigation Menu Styles --- */
+
+
+/* --- Layout Styles for Trends Page --- */
+.app-main-trends-layout {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for the top controls */
+    gap: 24px;      /* Space between chart and controls */
+    align-items: flex-start; /* Align items to the top */
+}
+/* Make the top Source Controls span full width above flex items */
+.controls-section-full-width {
+    width: 100%;
+    flex-basis: 100%; /* Ensure it takes full width in flex context */
+    margin-bottom: 0; /* Remove default margin if needed */
+    order: 0; /* Ensure it's first */
+}
+/* Chart Area (Left Side - Default) */
+#chartContainer {
+    position: relative; /* Needed for absolute positioning of tooltip */
+    padding-top: 0;
+
+    flex: 1; /* Grow to fill available space */
+    min-width: 400px; /* Minimum reasonable width for chart */
+    min-height: 450px; /* Minimum height */
+    order: 1; /* Chart below controls section */
+
+    /* Card styles */
+    background-color: var(--gcp-background-card);
+    border: 1px solid var(--gcp-border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Clip SVG content if it overflows */
+    margin-bottom: 24px;
+}
+/* Tag Selection Controls (Right Side - Default) */
+#tagSelectionControls {
+    flex-basis: 340px; /* Set a fixed base width for the controls */
+    flex-shrink: 0;   /* Prevent controls from shrinking */
+    order: 2;         /* Controls after chart */
+    /* Inherits filter-section and card styles */
+    margin-bottom: 24px; /* Keep consistent margin */
+}
+/* --- Responsive Adjustments for Trends Layout --- */
+@media (max-width: 992px) { /* Adjust breakpoint as needed */
+    .app-main-trends-layout {
+        flex-direction: column; /* Stack items vertically */
+        align-items: stretch; /* Stretch items to full width */
+    }
+    #chartContainer {
+        order: 2; /* Chart below controls */
+        flex-basis: auto; width: 100%; min-width: unset;
+    }
+    #tagSelectionControls {
+        order: 1; /* Controls above chart */
+        flex-basis: auto; width: 100%; max-width: unset;
+    }
+    /* controls-section-full-width order remains 0 */
+}
+/* --- End Layout Styles for Trends Page --- */
+
+
+/* Card Style (General) */
+.card {
+    background-color: var(--gcp-background-card);
+    border: 1px solid var(--gcp-border-color);
+    border-radius: var(--border-radius);
+    box-shadow: none; /* Prefer borders */
+    margin-bottom: 24px;
+    overflow: hidden; /* Prevents content (like tables) from breaking border radius */
+}
+
+/* Controls Section (General Source Button Container) */
+.controls-section {
+    margin-bottom: 16px;
+    padding: 0;
+}
+
+/* --- Button Styles --- */
+.button {
+    display: inline-flex; align-items: center; justify-content: center; padding: 6px 16px;
+    border: 1px solid transparent; border-radius: var(--border-radius); font-family: var(--font-family-sans-serif);
+    font-size: 0.875rem; font-weight: 500; cursor: pointer; text-align: center; text-decoration: none;
+    white-space: nowrap; transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    outline: none;
+}
+.button:disabled { cursor: not-allowed; opacity: 0.6; } /* Style for disabled buttons */
+.button:focus-visible { box-shadow: var(--gcp-focus-ring); }
+.button-primary { background-color: var(--gcp-blue); color: var(--gcp-background-card); border-color: var(--gcp-blue); }
+.button-primary:hover:not(:disabled) { background-color: var(--gcp-blue-dark); border-color: var(--gcp-blue-dark); }
+.button-primary:active:not(:disabled) { background-color: var(--gcp-blue-dark); border-color: var(--gcp-blue-dark); box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
+.button-secondary { background-color: transparent; color: var(--gcp-text-link); border-color: var(--gcp-border-color-heavy); }
+.button-secondary:hover:not(:disabled) { background-color: rgba(26, 115, 232, 0.05); border-color: var(--gcp-border-color-heavy); }
+.button-secondary:active:not(:disabled) { background-color: rgba(26, 115, 232, 0.1); border-color: var(--gcp-border-color-heavy); }
+.button-secondary:focus-visible { border-color: var(--gcp-blue); box-shadow: var(--gcp-focus-ring); }
+/* Icon button variant */
+.button-icon { padding: 6px 10px; min-width: 36px; font-size: 1.2rem; line-height: 1; }
+
+/* --- Input Field Styles --- */
+.input-field {
+    width: 100%; padding: 7px 10px; border: 1px solid var(--gcp-input-border); border-radius: var(--border-radius);
+    font-size: 0.875rem; font-family: var(--font-family-sans-serif); background-color: var(--gcp-background-card);
+    color: var(--gcp-text-primary); transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    line-height: 1.4; height: 36px;
+}
+.input-field:focus { outline: none; border-color: var(--gcp-input-focus-border); box-shadow: var(--gcp-focus-ring); }
+.input-field::placeholder { color: var(--gcp-text-secondary); opacity: 1; }
+input[type="datetime-local"] { min-height: 36px; }
+
+
+/* Filter Section (Used for Alarms and Trends Tag Selection) */
+.filter-section { padding: 16px 20px 20px 20px; }
+.filter-section legend { font-weight: 500; color: var(--gcp-text-primary); padding: 0 4px; font-size: 1rem; margin-left: -4px; margin-bottom: 10px; }
+
+
+/* --- Alarms Page Specific Filter Grid --- */
+.filter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px 16px; align-items: end; margin-top: 12px; }
+.filter-grid label { display: block; margin-bottom: 4px; font-size: 0.8rem; font-weight: 400; color: var(--gcp-text-secondary); }
+.filter-description { grid-column: span 2; }
+@media (max-width: 900px) { .filter-description { grid-column: span 1; } }
+.filter-button-container { display: flex; gap: 10px; align-items: center; padding-top: 19px; }
+.filter-button-container .button { height: 36px; flex-grow: 0; flex-shrink: 0; }
+
+
+/* --- Trends Page Tag Selection & Date Filter Styles --- */
+.date-range-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin-bottom: 16px; }
+.date-range-container label { display: block; margin-bottom: 4px; font-size: 0.8rem; font-weight: 400; color: var(--gcp-text-secondary); }
+.control-divider { border: none; border-top: 1px solid var(--gcp-border-color); margin: 16px 0; }
+.tag-adder-container { display: grid; grid-template-columns: auto 1fr auto; gap: 8px 12px; align-items: center; margin-bottom: 10px; }
+.tag-adder-container label { font-weight: 500; color: var(--gcp-text-secondary); font-size: 0.875rem; white-space: nowrap; }
+.tag-message { min-height: 1.5em; font-size: 0.8rem; color: var(--gcp-red); margin-top: -5px; margin-bottom: 10px; padding-left: 0; }
+.tag-message.info { color: var(--gcp-text-secondary); }
+#plottedTagsSection { margin-top: 16px; border-top: 1px solid var(--gcp-border-color); padding-top: 16px; }
+#plottedTagsSection label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--gcp-text-secondary); font-size: 0.875rem; }
+.plotted-tags-list { list-style: none; padding: 0; margin: 0; max-height: 150px; overflow-y: auto; border: 1px solid var(--gcp-border-color); border-radius: var(--border-radius); background-color: var(--gcp-background-main); }
+.plotted-tags-list li { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--gcp-border-color); font-size: 0.875rem; }
+.plotted-tags-list li:last-child { border-bottom: none; }
+.plotted-tags-list .no-tags-message { color: var(--gcp-text-secondary); font-style: italic; padding: 10px 12px; justify-content: center; }
+.plotted-tag-item .tag-name { flex-grow: 1; margin-right: 10px; word-break: break-all; }
+.button-remove.remove-tag-btn { padding: 2px 6px; font-size: 0.9rem; line-height: 1; min-width: 24px; height: 24px; background-color: transparent; color: var(--gcp-text-secondary); border: 1px solid var(--gcp-border-color); flex-shrink: 0; }
+.button-remove.remove-tag-btn:hover { background-color: #fce8e6; color: var(--gcp-red); border-color: #f9ddda; }
+/* --- End Trends Tag Selection Styles --- */
+
+
+/* --- Table Styles (Used by Alarms Page & Trends Alarm Display) --- */
+.table-container { padding: 0; border-top: none; /* Specific to alarms page wrapper */ }
+
+/* Generic Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem; /* 13px */
+    table-layout: auto; /* Allow columns to adjust, change to fixed if needed */
+}
+
+th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--gcp-border-color);
+    vertical-align: middle;
+    white-space: nowrap; /* Default to nowrap */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+thead th {
+    background-color: var(--gcp-table-header-bg);
+    color: var(--gcp-text-secondary);
+    font-weight: 500;
+    text-transform: none;
+    border-bottom-width: 1px; /* Slightly stronger bottom border for header */
+    position: sticky; /* Make header sticky within its container */
+    top: 0;
+    z-index: 1;
+    transition: background-color 0.1s ease;
+    user-select: none; /* Prevent text selection on headers */
+}
+
+/* Specific styling for the Description column (allow wrapping) */
+th.description-col,
+td.description-col {
+    white-space: normal !important; /* Override nowrap for descriptions */
+    min-width: 200px; /* Give description more space if possible */
+}
+
+/* Sortable Headers (Alarms Page Specific) */
+thead th.sortable-header { cursor: pointer; }
+thead th.sortable-header:hover { background-color: var(--gcp-hover-background); }
+.sortable-header::after { content: ''; display: inline-block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; margin-left: 6px; opacity: 0.4; vertical-align: middle; }
+.sortable-header.sort-asc::after { content: ''; border-bottom: 5px solid var(--gcp-text-secondary); border-top: 0; opacity: 1; }
+.sortable-header.sort-desc::after { content: ''; border-top: 5px solid var(--gcp-text-secondary); border-bottom: 0; opacity: 1; }
+
+/* Table Body Row Styling */
+tbody tr {
+    background-color: var(--gcp-background-card); /* Or #fff */
+    transition: background-color 0.05s ease;
+}
+tbody tr:hover { background-color: var(--gcp-hover-background); }
+
+/* Initial/No Results Message Styling (Alarms Page - Outside Table) */
+#tableContainer .initial-message {
+    color: var(--gcp-text-secondary);
+    text-align: center;
+    font-style: normal;
+    padding: 32px 20px;
+    font-size: 0.875rem;
+    background-color: var(--gcp-background-card);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    border-top: 1px solid var(--gcp-border-color);
+}
+/* No Results Message Styling (Inside Table Body - Used by Alarms Page) */
+tr.no-data-message-row td {
+    padding: 32px 20px;
+    text-align: center;
+    border-bottom: none;
+}
+tr.no-data-message-row .no-results-message {
+    color: var(--gcp-text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Critical Alarm Highlighting (Can be applied on either page if JS adds the class) */
+tbody tr.critical-alarm { background-color: #fce8e6; font-weight: 500; }
+tbody tr.critical-alarm:hover { background-color: #f9ddda; }
+tbody tr.critical-alarm td { color: #a50e0e; }
+
+/* Expanded Row Details (Alarms Page Specific) */
+tr.details-row td { padding: 16px 20px; background-color: #f1f3f4; border-left: 3px solid var(--gcp-blue); white-space: normal; font-size: 0.875rem; line-height: 1.6; color: var(--gcp-text-primary); border-bottom: 1px solid var(--gcp-border-color); }
+tr.details-row td .loading-text { font-style: italic; color: var(--gcp-text-secondary); }
+tr.details-row td .error-text { font-style: italic; color: var(--gcp-red); font-weight: 500; }
+tr.details-row td strong { font-weight: 500; color: var(--gcp-text-primary); display: block; margin-top: 8px; margin-bottom: 4px; }
+tbody tr.active-row { background-color: var(--gcp-hover-background); } /* For highlighting clicked row on alarms page */
+tbody tr.critical-alarm.active-row { background-color: #f9ddda; }
+
+/* Markdown Styles in Expanded Row (Alarms Page Specific) */
+tr.details-row td p { margin-bottom: 8px; line-height: 1.6; }
+tr.details-row td p:last-child { margin-bottom: 0; }
+tr.details-row td strong, tr.details-row td b { font-weight: 500; color: var(--gcp-text-primary); }
+tr.details-row td em, tr.details-row td i { font-style: italic; }
+tr.details-row td ul, tr.details-row td ol { margin-left: 20px; margin-bottom: 10px; margin-top: 5px; }
+tr.details-row td li { margin-bottom: 4px; }
+tr.details-row td code { background-color: var(--gcp-hover-background); padding: 2px 5px; border-radius: var(--border-radius); font-family: "Roboto Mono", monospace; font-size: 0.85em; color: var(--gcp-text-primary); border: 1px solid var(--gcp-border-color); }
+tr.details-row td pre { background-color: var(--gcp-hover-background); padding: 10px; border-radius: var(--border-radius); font-family: "Roboto Mono", monospace; font-size: 0.85em; overflow-x: auto; border: 1px solid var(--gcp-border-color); margin-top: 5px; margin-bottom: 10px; }
+tr.details-row td pre code { background-color: transparent; padding: 0; border: none; font-size: 1em; }
+tr.details-row td blockquote { border-left: 3px solid var(--gcp-border-color-heavy); margin-left: 0; padding-left: 15px; color: var(--gcp-text-secondary); font-style: italic; margin-top: 5px; margin-bottom: 10px; }
+tr.details-row td a { color: var(--gcp-text-link); text-decoration: none; }
+tr.details-row td a:hover { text-decoration: underline; }
+tr.details-row td hr { border: none; border-top: 1px solid var(--gcp-border-color); margin: 16px 0; }
+/* --- End Table Styles & Details --- */
+
+
+/* --- Chart Styles (Trends Page - D3 specific) --- */
+#chartDiv {
+    width: 100%;
+    height: 100%; /* Allow SVG to potentially fill container height */
+    min-height: 400px; /* Ensure minimum chart draw area */
+    position: relative; /* Context for absolutely positioned children like messages */
+}
+
+/* D3 Chart SVG */
+#chartDiv svg {
+    display: block; /* Remove extra space below SVG */
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-family-sans-serif); /* Inherit font */
+}
+
+/* D3 Axis Styles */
+.x-axis path, .y-axis path,
+.x-axis line, .y-axis line {
+    stroke: var(--gcp-border-color); /* Use GCP border color */
+    shape-rendering: crispEdges; /* Sharper lines */
+}
+
+.x-axis text, .y-axis text {
+    fill: var(--gcp-text-secondary); /* Use secondary text color */
+    font-size: 0.75rem; /* Smaller font for axes */
+}
+
+/* D3 Line Styles (specific lines are styled in JS via colorScale) */
+.line {
+    fill: none;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+/* Initial/Error message within chartDiv */
+#chartDiv .initial-chart-message {
+    /* Center message within the chartDiv space */
+    position: absolute; /* Position relative to #chartDiv */
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    min-height: inherit; /* Inherit min-height from parent */
+    color: var(--gcp-text-secondary);
+    background-color: var(--gcp-background-card); /* Match card background */
+    font-size: 0.9rem;
+    padding: 20px;
+    z-index: 10; /* Ensure it's above SVG if SVG exists */
+    border-radius: var(--border-radius); /* Match card radius */
+}
+#chartDiv .initial-chart-message.error-message {
+    color: var(--gcp-red);
+    font-weight: 500;
+}
+
+
+/* D3 Tooltip Style */
+.d3-tooltip {
+    position: absolute;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    background: rgba(32, 33, 36, 0.9); /* Dark background like GCP tooltips */
+    color: #ffffff; /* White text */
+    border-radius: var(--border-radius);
+    pointer-events: none; /* Prevent tooltip from blocking mouse events */
+    z-index: 30; /* Ensure it's above chart elements */
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: opacity 0.1s ease-out; /* Smooth fade */
+}
+/* Tooltip Date Style */
+.d3-tooltip .tooltip-date {
+    font-weight: 500;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.85rem;
+}
+/* Tooltip Table for alignment */
+.d3-tooltip table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.d3-tooltip td {
+    padding: 1px 3px;
+    vertical-align: middle;
+}
+
+/* --- Alarm Display Styles (Trends Page) --- */
+.alarm-display {
+    margin-top: 16px;
+    padding: 16px 20px; /* Consistent padding */
+    background-color: var(--gcp-background-card);
+    border: 1px solid var(--gcp-border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    display: none; /* Initially hidden */
+    overflow-x: auto; /* Add horizontal scroll if table content overflows */
+}
+/* Add spacing below the H3 title within the alarm display */
+.alarm-display h3 {
+    margin-bottom: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gcp-text-primary);
+}
+
+/* --- REMOVED Redundant Alarm Table Styles --- */
+/*
+.alarm-table { ... }
+.alarm-table th, .alarm-table td { ... }
+.alarm-table th { ... }
+*/
+/* Generic table styles above will apply */
+
+
+/* --- End Chart Styles --- */
+
+
+/* Footer */
+.app-footer {
+    text-align: center; margin-top: 32px; padding-top: 16px;
+    border-top: 1px solid var(--gcp-border-color); font-size: 0.75rem; color: var(--gcp-text-secondary);
+}
+
+/* --- END OF FILE style.css --- */

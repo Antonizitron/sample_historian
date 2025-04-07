@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process Historian - Trends (D3.js)</title> <!-- Updated Title -->
+  <!-- Google Font: Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Link to our stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <!-- PapaParse library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- *** D3.js library (v7) *** -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- Optional: Font Awesome for icons -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Process Historian</h1>
+      <p>Industrial Control System Data</p>
+      <nav class="app-navigation">
+        <ul>
+          <li><a href="alarms.html">Alarms and Events</a></li>
+          <li><a href="trends.html" class="active">Trends</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="app-main app-main-trends-layout">
+      <!-- Top Controls Section -->
+      <div class="controls-section controls-section-full-width" style="order: 0;">
+        <input type="file" id="csvTrendInput" accept=".csv" style="display: none;">
+        <button id="sourceTrendButton" class="button button-primary">Source Trends</button>
+        <span id="loadingMessage" style="margin-left: 15px; color: var(--gcp-text-secondary);"></span>
+      </div>
+
+      <!-- Chart Area (Moved above Tag Selection for default layout) -->
+      <div id="chartContainer" class="card" style="order: 1; flex: 1;"> <!-- Added card class -->
+        <!-- D3 will create the SVG inside here -->
+        <div id="chartDiv">
+          <p class="initial-chart-message">Load a CSV file using the "Source" button to view trends.</p>
+        </div>
+        <!-- Tooltip div (hidden by default) -->
+        <div id="tooltip" class="d3-tooltip" style="opacity:0;"></div>
+      </div>
+
+      <!-- Tag Selection & Date Filter UI -->
+      <fieldset id="tagSelectionControls" class="filter-section card" style="order: 2; flex-basis: 250px; flex-shrink: 0; display: none;"> <!-- Adjusted order and flex properties -->
+        <legend>Plot Controls</legend>
+        <div class="date-range-container">
+          <div>
+            <label for="trendStartDate">Start Date:</label>
+            <input type="datetime-local" id="trendStartDate" name="trendStartDate" class="input-field">
+          </div>
+          <div>
+            <label for="trendEndDate">End Date:</label>
+            <input type="datetime-local" id="trendEndDate" name="trendEndDate" class="input-field">
+          </div>
+        </div>
+        <hr class="control-divider">
+        <div class="tag-adder-container">
+          <label for="tagInput">Find Tag:</label>
+          <input type="text" id="tagInput" list="tagOptionsDatalist" placeholder="Type or select..." class="input-field">
+          <datalist id="tagOptionsDatalist"></datalist>
+          <button id="addTagButton" class="button button-primary button-icon" title="Add Tag to Plot">+</button>
+        </div>
+        <div id="tagUserMessage" class="tag-message"></div>
+        <div id="plottedTagsSection">
+          <label>Currently Plotted Tags:</label>
+          <ul id="plottedTagsList" class="plotted-tags-list">
+            <li class="no-tags-message">No tags added yet.</li>
+          </ul>
+        </div>
+      </fieldset>
+
+
+      <!-- Lower Row: Alarm Controls and Alarm Display (full width) -->
+      <div class="lower-row" style="order: 3; width: 100%; flex-basis: 100%;"> <!-- Adjusted order and added flex-basis -->
+        <!-- Alarm Controls -->
+        <div id="alarmControls" class="controls-section" style="margin-bottom: 8px;"> <!-- Reduced margin -->
+          <input type="file" id="csvAlarmsInput" accept=".csv" style="display: none;">
+          <button id="sourceAlarmsButton" class="button button-primary">Source Alarms</button>
+        </div>
+        <!-- Alarm Display Area -->
+        <!-- The .alarm-display class in CSS already applies card-like styling -->
+        <div id="alarmDisplay" class="alarm-display" style="display: none;">
+            <!-- Alarm table will be dynamically inserted here -->
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>© 2024 Process Historian App</p>
+    </footer>
+  </div>
+
+  <script src="trends.js"></script>
+</body>
+</html>
